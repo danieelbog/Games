@@ -1,0 +1,173 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Memorio</h1>
+
+<h3>Score: <span id="result"></span></h3>
+
+<div class="grid">
+</div>
+
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            //cards
+            const cardArray = [
+                {
+                    name: 'A',
+                    img: '/images/memoryGame/A.jpg'
+                },
+                {
+                    name: 'A',
+                    img: '/images/memoryGame/A.jpg'
+                },
+                {
+                    name: 'B',
+                    img: '/images/memoryGame/B.jpg'
+                },
+                {
+                    name: 'B',
+                    img: '/images/memoryGame/B.jpg'
+                },
+                {
+                    name: 'C',
+                    img: '/images/memoryGame/C.jpg'
+                },
+                {
+                    name: 'C',
+                    img: '/images/memoryGame/C.jpg'
+                },
+                {
+                    name: 'D',
+                    img: '/images/memoryGame/D.jpg'
+                },
+                {
+                    name: 'D',
+                    img: '/images/memoryGame/D.jpg'
+                },
+                {
+                    name: 'E',
+                    img: '/images/memoryGame/E.jpg'
+                },
+                {
+                    name: 'E',
+                    img: '/images/memoryGame/E.jpg'
+                },
+                {
+                    name: 'F',
+                    img: '/images/memoryGame/F.jpg'
+                },
+                {
+                    name: 'F',
+                    img: '/images/memoryGame/F.jpg'
+                },
+                {
+                    name: 'G',
+                    img: '/images/memoryGame/G.jpg'
+                },
+                {
+                    name: 'G',
+                    img: '/images/memoryGame/G.jpg'
+                },
+                {
+                    name: 'H',
+                    img: '/images/memoryGame/H.jpg'
+                },
+                {
+                    name: 'H',
+                    img: '/images/memoryGame/H.jpg'
+                },
+                {
+                    name: 'I',
+                    img: '/images/memoryGame/I.jpg'
+                },
+                {
+                    name: 'I',
+                    img: '/images/memoryGame/I.jpg'
+                },
+                {
+                    name: 'Z',
+                    img: '/images/memoryGame/Z.jpg'
+                },
+                {
+                    name: 'Z',
+                    img: '/images/memoryGame/Z.jpg'
+                }
+            ]
+
+            //RANDOMIZE
+            cardArray.sort(() => 0.5 - Math.random());
+
+
+            //BOARD
+            const grid = document.querySelector('.grid');
+
+            const resultDisplay = document.querySelector("#result");
+            let cardsChosen = [];
+            let cardsChosenId = [];
+            let cardsWon = [];
+
+            function createBoard() {
+                for (let i = 0; i < cardArray.length; i++) {
+                    var card = document.createElement('img');
+                    card.setAttribute("src", "/images/memoryGame/blank.png");
+                    card.setAttribute("style", "max-width:20%");
+                    card.setAttribute("class", "m-2");
+                    card.setAttribute('data-id', i);
+                    card.addEventListener('click', flipCard);
+                    grid.appendChild(card);
+                }
+            }
+
+            //check for matches
+            function checkForMatch() {
+                var cards = document.querySelectorAll('img')
+                const optionOneId = cardsChosenId[0]
+                const optionTwoId = cardsChosenId[1]
+
+                if (optionOneId == optionTwoId) {
+                    cards[optionOneId].setAttribute('src', '/images/memoryGame/blank.png')
+                    cards[optionTwoId].setAttribute('src', '/images/memoryGame/blank.png')
+                    alert('You have clicked the same image!')
+                }
+                else if (cardsChosen[0] === cardsChosen[1]) {
+                    alert('You found a match')
+                    cards[optionOneId].setAttribute('src', '/images/memoryGame/white.jpg')
+                    cards[optionTwoId].setAttribute('src', '/images/memoryGame/white.jpg')
+
+                    cards[optionOneId].removeEventListener('click', flipCard)
+                    cards[optionTwoId].removeEventListener('click', flipCard)
+                    cardsWon.push(cardsChosen)
+                } else {
+                    cards[optionOneId].setAttribute('src', '/images/memoryGame/blank.png')
+                    cards[optionTwoId].setAttribute('src', '/images/memoryGame/blank.png')
+                    alert('Sorry, try again')
+                }
+                cardsChosen = []
+                cardsChosenId = []
+                resultDisplay.textContent = cardsWon.length
+                if (cardsWon.length === cardArray.length / 2) {
+                    resultDisplay.textContent = 'Congratulations! You found them all!'
+                }
+            }
+
+            //flip card
+            function flipCard() {
+                var cardId = this.getAttribute('data-id')
+                cardsChosen.push(cardArray[cardId].name)
+                cardsChosenId.push(cardId)
+                this.setAttribute('src', cardArray[cardId].img)
+
+                if (cardsChosen.length === 2) {
+                    setTimeout(checkForMatch, 500)
+                }
+            }
+
+            createBoard();
+
+        })
+    </script>
+}
