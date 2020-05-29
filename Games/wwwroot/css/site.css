@@ -78,3 +78,24 @@ body {
     max-width: 100em;
     padding: 3em;
 }
+
+.gridMole{
+   display: flex;
+   flex-flow: row wrap;
+   justify-content: center;
+   align-content: center;
+   width: 32em;
+   height: 32em;
+}
+
+.square {
+    height: 10em;
+    width: 10em;
+    border-style: solid;
+    border-color: blueviolet;
+}
+
+.mole {
+    background-image: url(/images/mole/mole.jpg);
+    background-size: cover;
+}
